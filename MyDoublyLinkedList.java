@@ -52,18 +52,19 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     }
 
     @Override
+    //Represents the contents of the list as a String via StringBuilder
     public String toString()
     {
         StringBuilder sb = new StringBuilder("[");
         Node <E> curr = head.next;
+        String punct;
         for(int i = 0; i < size; i++)
         {
             sb.append(curr.element);
             curr = curr.next;
-            if(curr != head)
-                sb.append(", ");
-            else
-                sb.append("]");
+            //Circumvents an issue where the last element in the list would have a trailing comma.
+            punct = (curr != head) ? ", " : "]";
+            sb.append(punct);
         }
         return sb.toString();
     }
@@ -87,6 +88,8 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     }
 
     @Override
+    /*Logic differs depending on if there is a node(s) present in the list or not. If so, a swap using a temp
+    variable to hold the first node in the list is necessary.*/
     public void addFirst(E e)
     {
         Node<E> alphaNode = new Node<>(e);
@@ -109,6 +112,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     }
 
     @Override
+    //Similar to the situation with the addFirst method, size is evaluated to see if a temp swap is necessary
     public void addLast(E e) {
         Node<E> omegaNode = new Node<>(e);
         if (size == 0)
@@ -176,6 +180,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
                 dll_clone.add(get(i));
             return dll_clone;
         }
+
         catch (CloneNotSupportedException ex)
         {
             return null;
@@ -183,6 +188,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     }
 
     @Override
+    //With no specified parameter for position, the implementation is the same as the addLast method.
     public void add(E e) {
         addLast(e);
     }
@@ -204,6 +210,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         }
         else
         {
+            //Already checked for index 0 of the list above
             for (int i = 1; i < index; i++)
             {
                 curr = curr.next;
@@ -218,6 +225,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     }
 
     @Override
+    //Deleting nodes in a linked list is done by moving the pointers.
     public void clear()
     {
         head.next = head;
@@ -263,6 +271,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         return null;
     }
 
+    //Similar to IndexOf, however will traverse the list starting at the last index.
     public int lastIndexOf(E e) {
         Node<E> node = head.prev;
         if (e == null)
@@ -270,9 +279,8 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             for (int i = size; i > 0; i--)
             {
                 if (node.element == null)
-                {
                     return i-1;
-                } else
+                else
                     node = node.prev;
             }
         }
@@ -340,6 +348,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         return null;
     }
 
+    //Similar logic to add, however contents of the node in position index are replaced instead of adding a new node.
     public Object set(int index, E e) {
         Node<E> node = head.next;
         if (index < 0 || index >= size)
@@ -354,9 +363,10 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         return node;
     }
 
+    //Getter method for the size variable, defined in the grandparent class, MyAbstractList
     public int size()
     {
-        return size; //Returns the size of the list
+        return size;
     }
 
     public boolean equals(Object other)
@@ -373,9 +383,9 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             java.util.Iterator<?> otherIter = ((MyList<?>)other).iterator();
             while (thisIter.hasNext())
             {
-                E nextElt = thisIter.next();
-                Object otherElt = otherIter.next();
-                if (!(nextElt == null ? otherElt == null : nextElt.equals(otherElt)))
+                E nextE = thisIter.next();
+                Object otherE = otherIter.next();
+                if (!(nextE == null ? otherE == null : nextE.equals(otherE)))
                     return false;
             }
             return true;
@@ -402,6 +412,8 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         }
 
         @Override
+        /*lastReturned is used to ensure remove() is not called twice in a row, or called without a call to either
+        next() or previous() first.*/
         public void remove()
         {
             if (lastReturned == null)
@@ -471,6 +483,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         }
 
         @Override
+        //Must call next() or previous() first
         public void set(E e)
         {
             if(lastReturned == null)
