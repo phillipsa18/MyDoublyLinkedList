@@ -1,5 +1,3 @@
-//Andrew Phillips CSC 364-001
-//Assignment 1 MyDoublyLinkedList
 //This program creates a class MyDoublyLinkedList which implements a Doubly Circular Linked List as well as an iterator
 //for it. The class is a subclass of MyAbstractSequentialClass and inherits methods from MyAbstractSequentialList,
 //MyAbstractList and MyList.
